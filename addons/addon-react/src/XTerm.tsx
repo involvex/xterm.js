@@ -42,36 +42,68 @@ export const XTerm = memo(forwardRef<Terminal | null, IXTermProps>((props, ref) 
   const { options, addons, className, onResize, onData, onInit, onDispose } = props;
   const containerRef = useRef<HTMLDivElement>(null);
   const terminalRef = useRef<Terminal | null>(null);
+  const initialOptionsRef = useRef<ITerminalOptions | undefined>(options);
+  const initialAddonsRef = useRef<ITerminalAddon[] | undefined>(addons);
+  const onInitRef = useRef<IXTermProps['onInit']>(onInit);
+  const onDisposeRef = useRef<IXTermProps['onDispose']>(onDispose);
+  const onResizeRef = useRef<IXTermProps['onResize']>(onResize);
+  const onDataRef = useRef<IXTermProps['onData']>(onData);
 
   useImperativeHandle(ref, () => terminalRef.current!);
+
+  // Keep callback refs up to date so event handlers always see the latest callbacks
+  useEffect(() => {
+    onResizeRef.current = onResize;
+  }, [onResize]);
+
+  useEffect(() => {
+    onDataRef.current = onData;
+  }, [onData]);
+
+  useEffect(() => {
+    onDisposeRef.current = onDispose;
+  }, [onDispose]);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const term = new Terminal(options);
+    const term = new Terminal(initialOptionsRef.current);
     terminalRef.current = term;
 
-    if (addons) {
-      addons.forEach(addon => term.loadAddon(addon));
+    const addonsToLoad = initialAddonsRef.current;
+    if (addonsToLoad) {
+      addonsToLoad.forEach(addon => term.loadAddon(addon));
     }
 
     term.open(containerRef.current);
 
-    if (onInit) {
-      onInit(term);
+    const initCallback = onInitRef.current;
+    if (initCallback) {
+      initCallback(term);
     }
 
     const disposables = [
-      term.onResize(({ cols, rows }: { cols: number, rows: number }) => onResize?.(cols, rows)),
-      term.onData((data: string) => onData?.(data)),
+      term.onResize(({ cols, rows }: { cols: number, rows: number }) => {
+        const resizeHandler = onResizeRef.current;
+        if (resizeHandler) {
+          resizeHandler(cols, rows);
+        }
+      }),
+      term.onData((data: string) => {
+        const dataHandler = onDataRef.current;
+        if (dataHandler) {
+          dataHandler(data);
+        }
+      }),
     ];
 
     return () => {
       disposables.forEach(d => d.dispose());
       term.dispose();
       terminalRef.current = null;
-      if (onDispose) {
-        onDispose();
+      const disposeCallback = onDisposeRef.current;
+      if (disposeCallback) {
+        disposeCallback();
       }
     };
   }, []);
