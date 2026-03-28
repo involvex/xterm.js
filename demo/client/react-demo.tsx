@@ -16,7 +16,7 @@ const App = () => {
       .then(pidStr => {
         console.log('Created PTY with PID:', pidStr);
         setPid(parseInt(pidStr));
-      });
+      }).catch(err => console.error('Error creating terminal:', err));
   }, []);
 
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
