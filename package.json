@@ -75,7 +75,8 @@
     "package-headless": "webpack --config ./webpack.config.headless.js",
     "postpackage-headless": "bun ./bin/package_headless.js",
     "prepublishOnly": "bun run package",
-    "agent:setup-repo": "bun bin/agent/setup-repo.mjs"
+    "agent:setup-repo": "node bin/agent/setup-repo.mjs",
+    "agent:setup-repo:bun": "bun bin/agent/setup-repo.mjs"
   },
   "devDependencies": {
     "@lunapaint/png-codec": "^0.2.0",
