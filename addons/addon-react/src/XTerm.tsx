@@ -112,7 +112,7 @@ export const XTerm = memo(forwardRef<Terminal | null, IXTermProps>((props, ref) 
   useEffect(() => {
     if (terminalRef.current && options) {
       Object.entries(options).forEach(([key, value]) => {
-      terminalRef.current!.options[key as keyof ITerminalOptions] = value as ITerminalOptions[keyof ITerminalOptions];
+        terminalRef.current!.options[key as keyof ITerminalOptions] = value as ITerminalOptions[keyof ITerminalOptions];
       });
     }
   }, [options]);
