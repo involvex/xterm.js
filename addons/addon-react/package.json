@@ -1,0 +1,31 @@
+{
+  "name": "@xterm/addon-react",
+  "version": "0.1.0",
+  "author": {
+    "name": "The xterm.js authors",
+    "url": "https://xtermjs.org/"
+  },
+  "main": "lib/addon-react.js",
+  "module": "lib/addon-react.mjs",
+  "types": "typings/addon-react.d.ts",
+  "repository": "https://github.com/xtermjs/xterm.js/tree/master/addons/addon-react",
+  "license": "MIT",
+  "keywords": [
+    "terminal",
+    "xterm",
+    "xterm.js",
+    "react"
+  ],
+  "peerDependencies": {
+    "@xterm/addon-attach": ">=0.10.0",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "scripts": {
+    "build": "../../node_modules/.bin/tsgo -p .",
+    "prepackage": "bun run build",
+    "package": "../../node_modules/.bin/webpack",
+    "prepublishOnly": "bun run package",
+    "start": "bun ../../demo/start"
+  }
+}

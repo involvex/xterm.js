@@ -13,6 +13,7 @@ const config = {
   isWatch: argv.includes('--watch'),
   isDemoClient: argv.includes('--demo-client'),
   isDemoServer: argv.includes('--demo-server'),
+  isDemoReact: argv.includes('--demo-react'),
   isHeadless: argv.includes('--headless'),
   addon: argv.find(e => e.startsWith('--addon='))?.replace(/^--addon=/, ''),
 };
@@ -104,6 +105,7 @@ if (config.addon) {
     ...bundleConfig,
     entryPoints: [`addons/addon-${config.addon}/src/${getAddonEntryPoint(config.addon)}.ts`],
     outfile: `addons/addon-${config.addon}/lib/addon-${config.addon}.mjs`,
+    external: ['@xterm/xterm', 'react', 'react-dom', 'react-native', 'react-native-webview'],
   };
   outConfig = {
     ...outConfig,
@@ -132,6 +134,7 @@ if (config.addon) {
     outfile: 'demo/dist/client-bundle.js',
     external: ['util', 'os', 'fs', 'path', 'stream', 'Terminal'],
     alias: {
+        "@xterm/addon-attach": "./addons/addon-attach/lib/addon-attach.mjs",
       // Library ESM imports
       "@xterm/xterm": ".",
       "@xterm/addon-attach": "./addons/addon-attach/lib/addon-attach.mjs",
@@ -153,6 +156,20 @@ if (config.addon) {
       //       supported` exception to be thrown. So the unbundled out-esbuild sources are used
       //       instead of the .mjs file which seems to resolve the issue.
       "@xterm/addon-ligatures": "./addons/addon-ligatures/out-esbuild/LigaturesAddon",
+    }
+  }
+  skipOut = true;
+  skipOutTest = true;
+} else if (config.isDemoReact) {
+  bundleConfig = {
+    ...bundleConfig,
+    entryPoints: [`demo/client/react-demo.tsx`],
+    outfile: "demo/dist/react-demo-bundle.js",
+    external: ["util", "os", "fs", "path", "stream", "Terminal"],
+    alias: {
+        "@xterm/addon-attach": "./addons/addon-attach/lib/addon-attach.mjs",
+      "@xterm/xterm": ".",
+      "@xterm/addon-react": "./addons/addon-react/lib/addon-react.mjs",
     }
   }
   skipOut = true;

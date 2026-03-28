@@ -6,6 +6,7 @@
     "rootDir": ".",
     "sourceMap": true,
     "strict": true,
+    "jsx": "react-jsx",
     "skipLibCheck": true,
     "paths": {
       "@xterm/addon-attach": ["../../addons/addon-attach"],
@@ -21,6 +22,7 @@
       "@xterm/addon-unicode11": ["../../addons/addon-unicode11"],
       "@xterm/addon-unicode-graphemes": ["../../addons/addon-unicode-graphemes"],
       "@xterm/addon-ligatures": ["../../addons/addon-ligatures"],
+      "@xterm/addon-react": ["../../addons/addon-react"],
       "*": ["./*"]
     }
   },
