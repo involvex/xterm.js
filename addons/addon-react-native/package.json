@@ -1,0 +1,31 @@
+{
+  "name": "@xterm/addon-react-native",
+  "version": "0.1.0",
+  "author": {
+    "name": "The xterm.js authors",
+    "url": "https://xtermjs.org/"
+  },
+  "main": "lib/addon-react-native.js",
+  "module": "lib/addon-react-native.mjs",
+  "types": "typings/addon-react-native.d.ts",
+  "repository": "https://github.com/xtermjs/xterm.js/tree/master/addons/addon-react-native",
+  "license": "MIT",
+  "keywords": [
+    "terminal",
+    "xterm",
+    "xterm.js",
+    "react-native"
+  ],
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-native": ">=0.60.0",
+    "react-native-webview": ">=11.0.0"
+  },
+  "scripts": {
+    "build": "../../node_modules/.bin/tsgo -p .",
+    "prepackage": "bun run build",
+    "package": "../../node_modules/.bin/webpack",
+    "prepublishOnly": "bun run package",
+    "start": "bun ../../demo/start"
+  }
+}

@@ -1,0 +1,5 @@
+$ bun demo/start
+App listening to http://127.0.0.1:3000
+Created terminal with PID: 22643
+Created terminal with PID: 24283
+error: script "start" was terminated by signal SIGTERM (Polite quit request)

@@ -263,3 +263,59 @@ If you contribute code to this project, you implicitly allow your code to be dis
 Copyright (c) 2017-2026, [The xterm.js authors](https://github.com/xtermjs/xterm.js/graphs/contributors) (MIT License)<br>
 Copyright (c) 2014-2017, SourceLair, Private Company ([www.sourcelair.com](https://www.sourcelair.com/home)) (MIT License)<br>
 Copyright (c) 2012-2013, Christopher Jeffrey (MIT License)
+
+## Framework Support
+
+### Bun
+xterm.js now fully supports the Bun runtime. You can install and run the project using Bun for faster builds and better performance.
+
+```bash
+bun install
+bun run esbuild
+bun run test
+```
+
+### React
+The `@xterm/addon-react` package provides a high-performance React component for embedding xterm.js into your React applications.
+
+```tsx
+import { XTerm } from '@xterm/addon-react';
+
+function MyApp() {
+  return <XTerm options={{ cursorBlink: true }} onData={(data) => console.log(data)} />;
+}
+```
+
+It also includes hooks for managing terminal instances and addons:
+- `useTerminal(options)`
+- `useTerminalAddon(addon, terminal)`
+
+### React Native
+The `@xterm/addon-react-native` package provides a React Native component for displaying a terminal using a WebView-based bridge.
+
+```tsx
+import { XTermReactNative } from '@xterm/addon-react-native';
+
+function MyMobileApp() {
+  return <XTermReactNative onData={(data) => console.log(data)} />;
+}
+```
+
+### PTY Integration
+Connecting a terminal to a backend PTY is easy with the `usePty` hook:
+
+```tsx
+import { XTerm, usePty } from '@xterm/addon-react';
+
+function MyShell() {
+  const [terminal, setTerminal] = useState(null);
+  const { status } = usePty(terminal, 'ws://localhost:3000/terminals/123');
+
+  return (
+    <div>
+      <p>Status: {status}</p>
+      <XTerm onInit={(term) => setTerminal(term)} />
+    </div>
+  );
+}
+```
